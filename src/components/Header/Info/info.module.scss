@@ -1,0 +1,22 @@
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.basket {
+  margin-right: 10px;
+}
+
+.price,
+.heart {
+  margin-right: 30px;
+}
+
+.price {
+  cursor: pointer;
+}
+
+.TotalPrice {
+  margin-right: 10px;
+}

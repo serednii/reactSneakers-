@@ -1,0 +1,15 @@
+.draverItemsEmpty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    h2 {
+        margin-bottom: 20px !important;
+    }
+
+    p {
+        opacity: 0.6;
+        margin-bottom: 20px;
+    }
+}

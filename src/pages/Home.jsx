@@ -1,51 +1,40 @@
+
 import React from 'react';
+import Card from '../components/Card/Card';
+import TitleCards from '../components/TitleCards/TitleCards';
+import AppContext from '../context';
 
-import Card from '../components/Card';
+import styles from './Home.module.scss';
 
-function Home({
-  items,
-  searchValue,
-  setSearchValue,
-  onChangeSearchInput,
-  onAddToFavorite,
-  onAddToCart,
-  isLoading,
-}) {
-  const renderItems = () => {
-    const filtredItems = items.filter((item) =>
-      item.title.toLowerCase().includes(searchValue.toLowerCase()),
-    );
-    return (isLoading ? [...Array(8)] : filtredItems).map((item, index) => (
-      <Card
-        key={index}
-        onFavorite={(obj) => onAddToFavorite(obj)}
-        onPlus={(obj) => onAddToCart(obj)}
-        loading={isLoading}
-        {...item}
-      />
-    ));
-  };
-
-  return (
-    <div className="content p-40">
-      <div className="d-flex align-center justify-between mb-40">
-        <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}</h1>
-        <div className="search-block d-flex">
-          <img src="img/search.svg" alt="Search" />
-          {searchValue && (
-            <img
-              onClick={() => setSearchValue('')}
-              className="clear cu-p"
-              src="img/btn-remove.svg"
-              alt="Clear"
+function Home() {
+    const { items, cartItems, favorites, setIsAddedCart, isLoading, searchValue } = React.useContext(AppContext);
+    const renderItems = () => {
+        const filtredItems = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()));
+        return (isLoading ? [...Array(8)] : filtredItems).map((item, i) => (
+            <Card
+                key={"card" + i}
+                {...item}
+                favorited={favorites.some(e => e.parentId === item.parentId ? true : false)}
+                added={cartItems.some(e => e.parentId === item.parentId ? true : false)}
+                showEdit
+                showDeleted
+                showFavorite
             />
-          )}
-          <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..." />
+        ));
+    }
+    return (
+        <div>
+            <TitleCards key="titleCards" />
+            <div className={styles.cardsAdded} >
+                {<div className={styles.added} onClick={() => setIsAddedCart(true)} >
+                    <img src='images/added.svg' />
+                </div>}
+            </div>
+            <div className={styles.cards}>
+                {renderItems()}
+            </div>
         </div>
-      </div>
-      <div className="d-flex flex-wrap">{renderItems()}</div>
-    </div>
-  );
-}
+    );
+};
 
 export default Home;
